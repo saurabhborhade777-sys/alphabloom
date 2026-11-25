@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Alphabloom — Kids Learning Storybook</title>
+  <meta name="description" content="Alphabloom by SB Gaming — Offline 3D Paper-Craft & Claymation Kids Educational Game across 17 Indian languages." />
+  <meta name="theme-color" content="#FF766C" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Alphabloom" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- 1. SB GAMING SPLASH SCREEN (5s progress + 100% Start Button) -->
+  <section id="splash-screen" class="splash-screen" aria-label="SB Gaming Splash Screen">
+    <div class="splash-stars" aria-hidden="true">
+      <span class="star s1 animate-sparkle">✦</span>
+      <span class="star s2 animate-sparkle">★</span>
+      <span class="star s3 animate-sparkle">✦</span>
+      <span class="star s4 animate-sparkle">★</span>
+      <span class="star s5 animate-sparkle">✦</span>
+      <span class="star s6 animate-sparkle">★</span>
+    </div>
+    <div class="splash-card animate-splash-fade-in">
+      <div class="sb-orbit-wrap" aria-hidden="true">
+        <div class="sb-orbit-ring ring-1"></div>
+        <div class="sb-orbit-ring ring-2"></div>
+        <div class="sb-emblem animate-float-slow">🎮</div>
+      </div>
+      <h1 class="sb-logo animate-splash-pulse">SB Gaming</h1>
+      <p class="sb-tagline">PRESENTS</p>
+      <div class="splash-title-preview">Alphabloom 🌸</div>
+
+      <div class="splash-progress-wrap" id="splash-progress-wrap">
+        <div class="splash-progress-track">
+          <div class="splash-progress-fill" id="splash-progress-fill"></div>
+        </div>
+        <div class="splash-percent" id="splash-percent">1%</div>
+      </div>
+
+      <button type="button" id="splash-start-btn" class="clay-btn start-btn animate-splash-start-reveal hidden" aria-label="Start Alphabloom">
+        ✨ Start ✨
+      </button>
+    </div>
+  </section>
+
+  <!-- 2. MAIN APP SHELL (3D Paper-Craft & Soft Claymation Storybook World) -->
+  <div id="app-shell" class="app-shell hidden">
+    <!-- Decorative 3D paper-craft sky, sun, clouds, butterflies & hills -->
+    <div class="bg-decor" aria-hidden="true">
+      <div class="clay-sun"><div class="clay-sun-core"></div></div>
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+      <span class="bg-flower f1 animate-float-slow">🌸</span>
+      <span class="bg-flower f2 animate-float-alt">🦋</span>
+      <span class="bg-flower f3 animate-float-slow">🌺</span>
+      <span class="bg-flower f4 animate-float-alt">🌻</span>
+      <span class="bg-flower f5 animate-sparkle">✨</span>
+      <div class="bg-hill hill-back"></div>
+      <div class="bg-hill hill-front"></div>
+    </div>
+
+    <!-- Top Persistent Bar: Exit (Top-Left), 3D Alphabloom Title (Center), Music + Install (Top-Right) -->
+    <header class="top-bar">
+      <div class="top-left">
+        <button type="button" id="exit-btn" class="clay-btn clay-coral" aria-label="Exit Alphabloom">
+          🚪 <span id="exit-btn-label">Exit</span>
+        </button>
+      </div>
+
+      <div class="top-center">
+        <div class="alphabloom-title" aria-label="Alphabloom">
+          <span class="title-flower animate-float-slow">🌸</span>
+          <span class="l-a animate-letter-bounce">A</span><span class="l-l animate-letter-bounce">l</span><span class="l-p animate-letter-bounce">p</span><span class="l-h animate-letter-bounce">h</span><span class="l-a2 animate-letter-bounce">a</span><span class="l-b animate-letter-bounce">b</span><span class="l-l2 animate-letter-bounce">l</span><span class="l-o animate-letter-bounce">o</span><span class="l-o2 animate-letter-bounce">o</span><span class="l-m animate-letter-bounce">m</span>
+          <span class="title-flower animate-float-alt">🌼</span>
+        </div>
+      </div>
+
+      <div class="top-right">
+        <button type="button" id="install-btn" class="clay-btn clay-marigold hidden" aria-label="Install App">
+          📲 <span>Install</span>
+        </button>
+        <button type="button" id="fullscreen-btn" class="clay-btn clay-sky btn-fs" aria-label="Toggle Fullscreen">
+          ⛶
+        </button>
+        <button type="button" id="music-btn" class="clay-btn clay-mint btn-music" aria-label="Toggle Background Music">
+          🎵 <span id="music-btn-label">Music On</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Dynamic View Container -->
+    <main id="main-view" class="main-view" role="main"></main>
+
+    <!-- Safe Bottom Banner Ad (Shown ONLY on Hub & Home Screen, hidden offline) -->
+    <aside id="safe-banner-ad" class="safe-banner-ad hidden" aria-label="Advertisement">
+      <div class="safe-banner-inner">
+        <span class="ad-badge">AD</span>
+        <div id="safe-banner-slot" class="safe-banner-slot"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 3. EXIT CONFIRMATION 3D STORYBOOK POPUP -->
+  <div id="exit-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
+    <div class="clay-modal clay-surface animate-splash-fade-in">
+      <div class="modal-icon animate-float-slow">🌸</div>
+      <h2 id="exit-modal-title" class="modal-title">Leaving so soon?</h2>
+      <p id="exit-modal-msg" class="modal-msg">Are you sure you want to exit Alphabloom?</p>
+      <div class="modal-actions">
+        <button type="button" id="exit-yes-btn" class="clay-btn clay-coral">Yes</button>
+        <button type="button" id="exit-no-btn" class="clay-btn clay-mint">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 3D CLAY DAILY REWARD GIFT BOX MODAL -->
+  <div id="gift-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gift-modal-title">
+    <div class="clay-modal clay-surface animate-splash-fade-in">
+      <h2 id="gift-modal-title" class="modal-title">🎁 Daily Surprise!</h2>
+      <div class="gift-stage">
+        <div id="gift-glow" class="gift-glow"></div>
+        <button type="button" id="gift-box-btn" class="gift-box-wrap animate-gift-wobble" aria-label="Open Daily Gift Box">
+          <div id="gift-lid" class="gift-lid">🎀</div>
+          <div class="gift-body"><div class="gift-ribbon"></div></div>
+        </button>
+        <span class="gift-star" id="gs1" style="--star-x: -58px; --star-y: -58px; --star-rot: -24deg;">⭐</span>
+        <span class="gift-star" id="gs2" style="--star-x: 56px; --star-y: -54px; --star-rot: 26deg;">🌟</span>
+        <span class="gift-star" id="gs3" style="--star-x: -64px; --star-y: 12px; --star-rot: -18deg;">✨</span>
+        <span class="gift-star" id="gs4" style="--star-x: 64px; --star-y: 14px; --star-rot: 22deg;">🌸</span>
+      </div>
+      <div id="gift-reward-badge" class="gift-reward-badge clay-marigold hidden">+25 ⭐</div>
+      <p id="gift-modal-msg" class="modal-msg">Tap the gift box to open your daily stars!</p>
+      <div class="modal-actions">
+        <button type="button" id="gift-close-btn" class="clay-btn clay-sky">Awesome!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. GOODBYE FALLBACK OVERLAY -->
+  <div id="goodbye-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="clay-modal clay-surface">
+      <div class="modal-icon">👋🌸</div>
+      <h2 class="modal-title">Bye-Bye!</h2>
+      <p class="modal-msg">See you next time in Alphabloom!</p>
+      <button type="button" id="return-app-btn" class="clay-btn clay-mint">Open Alphabloom</button>
+    </div>
+  </div>
+
+  <!-- 6. PARENTAL GATE MODAL (Protects Rewarded Bonus Ad) -->
+  <div id="parent-gate-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="parent-gate-title">
+    <div class="clay-modal clay-surface animate-splash-fade-in">
+      <div class="modal-icon">🔒👨‍👩‍👧</div>
+      <h2 id="parent-gate-title" class="modal-title">Ask a Parent</h2>
+      <p id="parent-gate-question" class="modal-msg">What is 8 + 6?</p>
+      <input type="number" id="parent-gate-input" class="parent-gate-input" inputmode="numeric" placeholder="Answer" aria-label="Parent math answer" />
+      <p id="parent-gate-error" class="parent-gate-error hidden">Try again!</p>
+      <div class="modal-actions">
+        <button type="button" id="parent-gate-submit" class="clay-btn clay-mint">Continue</button>
+        <button type="button" id="parent-gate-cancel" class="clay-btn clay-cream">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. KID-SAFE AD PREVIEW OVERLAY (Test Mode Only) -->
+  <div id="ad-test-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="ad-test-title">
+    <div class="clay-modal clay-surface">
+      <span class="ad-badge">AD</span>
+      <div class="modal-icon">📺</div>
+      <h2 id="ad-test-title" class="modal-title">Ad Space (Test Mode)</h2>
+      <p id="ad-test-sub" class="modal-msg">Family-Safe Ad Preview</p>
+      <div class="modal-actions">
+        <button type="button" id="ad-test-close" class="clay-btn clay-sky">Close Ad</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Reward Feedback Layer (+10 / -5) -->
+  <div id="float-layer" class="float-layer" aria-hidden="true"></div>
+
+  <script src="./audio.js"></script>
+  <script src="./languages.js"></script>
+  <!-- Google AdSense / H5 Games Ad Placement API Hooks (activated by ads.js when live IDs are set) -->
+  <script>
+    window.adsbygoogle = window.adsbygoogle || [];
+    window.adBreak = window.adBreak || function (o) { window.adsbygoogle.push(o); };
+    window.adConfig = window.adConfig || function (o) { window.adsbygoogle.push(o); };
+  </script>
+  <script src="./stories.js"></script>
+  <script src="./ads.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js').catch(function () {});
+      });
+    }
+  </script>
+</body>
+</html>
